@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # gitHubToken
-/src/gitHubToken.js
+/src/gitHubStuff.js
 
 # dependencies
 /node_modules
