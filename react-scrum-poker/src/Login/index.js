@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Label } from 'semantic-ui-react';
-import gitHubStuff from '../gitHubStuff.js';
+// import gitHubStuff from '../gitHubStuff.js';
 
 
 class Login extends Component {
@@ -23,6 +23,8 @@ class Login extends Component {
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
+		console.log(`After preventDefault`);
+		
 		const loginResponse = await fetch('http://localhost:9000/auth/register', {
 			method: 'POST',
 			credentials: 'include',
@@ -81,6 +83,7 @@ class Login extends Component {
 					<Form.Input type='text' name='company' onChange={this.handleChange} />
 					<Button type='Submit' color='blue'>Login</Button>
 				</Form>
+				<br/>
 				<br/>
 				<Form onSubmit={this.handleSubmitGitHub}>
 					<Label> Login With GitHub: </Label><br/>

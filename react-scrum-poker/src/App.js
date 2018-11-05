@@ -15,8 +15,7 @@ class App extends Component {
     	logged: false,
     	username: '',
     	repos: [],
-    	issues: []    
-    }
+	    }
 	}
 
 	handleLogin = (username, isLogged) => {
