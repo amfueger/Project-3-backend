@@ -41,11 +41,13 @@ app.use(cors(corsOptions));
 
 const authController 	 = require('./Controllers/authController.js');
 const userController 	 = require('./Controllers/userController.js');
+const gameController 	 = require('./Controllers/gameController.js');
 // const calendarController = require('./Controllers/calendarController.js');
 // const gitHubController   = require('./Controllers/gitHubController.js');
 
 app.use('/auth', authController);
 app.use('/user', userController);
+app.use('/game', gameController);
 // app.use('/calendar', calendarController);
 // app.use('/gitHub', gitHubController);
 
