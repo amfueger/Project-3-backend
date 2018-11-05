@@ -42,29 +42,29 @@ class Login extends Component {
 		}
 	}
 
-	handleSubmitGitHub = async (e) => {
-		e.preventDefault();
-		console.log(`after preventDefault`);
-		const goToGitHubLoginResponse = await fetch('https://github.com/login/oauth/authorize?client_id=' + gitHubStuff.client_id);
-		// 	, {
-		// 	mode: 'no-cors',
-		// 	// client_id: gitHubStuff.client_id,
-		// 	redirect_uri: 'http://localhost:9000/auth/register',
-		// 	headers: {
-		// 		'Access-Control-Allow-Origin': 'http://localhost:9000/auth/register'
-		// 	}
-		// }
-		console.log(`after goToGitHubLoginResponse`, goToGitHubLoginResponse);
-		const parsedResponse = await goToGitHubLoginResponse.json();
+	// handleSubmitGitHub = async (e) => {
+	// 	e.preventDefault();
+	// 	console.log(`after preventDefault`);
+	// 	const goToGitHubLoginResponse = await fetch('https://github.com/login/oauth/authorize?client_id=' + gitHubStuff.client_id);
+	// 	// 	, {
+	// 	// 	mode: 'no-cors',
+	// 	// 	// client_id: gitHubStuff.client_id,
+	// 	// 	redirect_uri: 'http://localhost:9000/auth/register',
+	// 	// 	headers: {
+	// 	// 		'Access-Control-Allow-Origin': 'http://localhost:9000/auth/register'
+	// 	// 	}
+	// 	// }
+	// 	console.log(`after goToGitHubLoginResponse`, goToGitHubLoginResponse);
+	// 	const parsedResponse = await goToGitHubLoginResponse.json();
 
-		console.log(`<Login> handleSubmitGitHub() parsedResponse`, parsedResponse);
+	// 	console.log(`<Login> handleSubmitGitHub() parsedResponse`, parsedResponse);
 
-		if(parsedResponse.data === 'login successful'){
-			this.props.history.push('/profile');
-			// Validation?
-			this.props.handleLogin(this.state.username, true);
-		}
-	}
+	// 	if(parsedResponse.data === 'login successful'){
+	// 		this.props.history.push('/profile');
+	// 		// Validation?
+	// 		this.props.handleLogin(this.state.username, true);
+	// 	}
+	// }
 
 	render(){
 		// console.log(`gitHubStuff: `, gitHubStuff);

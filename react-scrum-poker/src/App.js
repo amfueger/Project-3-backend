@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+// import NavHeaderNotLogged from './NavHeaderNotLogged';
+// import NavHeaderLogged from './NavHeaderLogged';
 import GitHubUserRepos from './GitHubUserRepos';
 import Login from './Login';
 // import Register from './Register';
@@ -55,6 +57,7 @@ class App extends Component {
 		})
 	}
 
+        // {this.state.logged ? <NavHeaderLogged /> : <NavHeaderNotLogged />}
   render() {
     return (
       <div className="App">
