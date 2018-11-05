@@ -14,11 +14,11 @@ const User 		= require('../Models/userModel.js');
 router.post('/register', async (req, res, next) => {
 
 	try {
-				// await User.deleteMany();
+		// await User.deleteMany();
 
-    const user = await User.find({username: req.body.username}); // Check if user exists
+    // const user = await User.find({username: req.body.username}); // Check if user exists
 
-    if (user.length == 0){
+    // if (user.length == 0){
 
     	console.log(`---------- .post /register - req.body: ----------\n`, req.body);
 
@@ -51,9 +51,9 @@ router.post('/register', async (req, res, next) => {
 	      data: 'login successful'
 	    });
     
-    } else {
-	    console.log('Sorry! This username has already been taken :(');
-    }
+    // } else {
+	    // console.log('Sorry! This username has already been taken :(');
+    // }
 	} catch(err){
     next(err);
 	}
