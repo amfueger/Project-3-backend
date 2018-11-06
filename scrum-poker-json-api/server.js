@@ -46,7 +46,7 @@ const gameController 	 = require('./Controllers/gameController.js');
 // const gitHubController   = require('./Controllers/gitHubController.js');
 
 app.use('/auth', authController);
-app.use('/user', userController);
+app.use('/users', userController);
 app.use('/games', gameController);
 // app.use('/calendar', calendarController);
 // app.use('/gitHub', gitHubController);

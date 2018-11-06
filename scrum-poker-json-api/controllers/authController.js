@@ -14,7 +14,7 @@ const User 		= require('../Models/userModel.js');
 router.post('/register', async (req, res, next) => {
 
 	try {
-		// await User.deleteMany();
+	// await User.deleteMany();
 
     // const user = await User.find({username: req.body.username}); // Check if user exists
 
@@ -35,7 +35,7 @@ router.post('/register', async (req, res, next) => {
 	    userDbEntry.password 	= password;
 	    // userDbEntry.password = passwordHash;
 
-	    const createdUser = await User.create(userDbEntry);
+	    const createdUser 		= await User.create(userDbEntry);
 
 	    console.log(`---------- .post /register - createdUser: ----------\n`, createdUser);
 
@@ -55,7 +55,7 @@ router.post('/register', async (req, res, next) => {
 	    // console.log('Sorry! This username has already been taken :(');
     // }
 	} catch(err){
-    next(err);
+	    next(err);
 	}
 });
 

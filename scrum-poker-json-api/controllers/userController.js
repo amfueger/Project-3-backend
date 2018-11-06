@@ -15,10 +15,10 @@ router.get('/', async (req, res, next) => {
 		// await User.deleteMany();
 
 	    const users = await User.find({});
-	    res.render('../views/userViews/index.ejs', {
-	    	users,
-	    	session: req.session
-	    })
+	    res.json({
+		    status: 200,
+	        data: users
+	    });
 	} catch(err){
 	    next(err);
 	}
@@ -37,7 +37,7 @@ router.get('/:id', async (req, res, next) => {
 
 	    // console.log(`---------- user ----------\n`, user);
 
-	    res.render('../views/userViews/show.ejs', {
+	    res.json('../views/userViews/show.ejs', {
 	    	user,
 	    	session: req.session
 	    })
@@ -64,7 +64,7 @@ router.get('/:id/edit', async (req, res, next) => {
 
 	try {
 		if (req.session.logged && req.session.username === user.username) {		// If CORRECT user logged on, lead to user's edit page
-		    res.render('../views/userViews/edit.ejs', {
+		    res.json('../views/userViews/edit.ejs', {
 		    	user,
 		    	session: req.session
 		    })
