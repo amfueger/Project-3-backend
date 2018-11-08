@@ -59,15 +59,15 @@ router.post('/register', async (req, res, next) => {
 		    req.session.username = req.body.username;
 		    req.session.logged   = true;
 		    req.session.userId	 = createdUser.id;
+		    req.session.chatUser = createChatUser;
 
 	    	console.log(`---------- .post /register - req.session: ----------\n`, req.session);
 
 		    res.json({
 		      status: 201,
 		      data: 'Register Successful',
-		      session: req.session,
-		      ChatUser: createChatUser
-		    });
+		      session: req.session
+  		    });
 	    
 	    } else {
 		    console.log('Sorry! This username has already been taken :(')
@@ -97,11 +97,11 @@ router.post('/login', async(req, res, next) => {
 		    req.session.username = req.body.username;
 		    req.session.logged   = true;
 		    req.session.userId 	 = user[0]._id;
+		    req.session.authData = authData.body;
 
 		    res.json({
 		      status: 201,
 		      data: 'Login Successful',
-		      authData: authData.body,
 		      session: req.session
 		    });
 
