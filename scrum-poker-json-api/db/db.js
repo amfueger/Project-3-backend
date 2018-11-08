@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/scrum');
+const connectionStr = process.env.MONGOD_URI || "mongodb://localhost/scrum";
+mongoose.connect(connectionStr);
 
 mongoose.connection.on('connected', () => {
   console.log('Mongoose connected');

@@ -5,6 +5,7 @@ const methodOverride = require('method-override');
 const cors           = require('cors');
 const session        = require('express-session');
 // const request 		 = require('superagent');
+require('dotenv').config();
 
 require('./db/db');
 
@@ -28,6 +29,10 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));
+
+
+
+
 
 // app.use((req, res, next) => {
 // 	if(req.session.loggedIn == undefined) {
