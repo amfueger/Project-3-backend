@@ -10,7 +10,8 @@ const Game 		= require('../Models/gameModel.js');
 
 // ************************* GAME INDEX ROUTE ***************************
 
-router.get('/:id', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
+  // await Game.deleteMany();
 
   const games = await Game.find({});
     res.json({

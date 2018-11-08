@@ -34,14 +34,10 @@ router.post('/register', async (req, res, next) => {
 
 	    if (user.length === 0){
 
-	    	console.log(`---------- .post /register - req.body: ----------\n`, req.body);
-
-	    	// const createChatUser = await chatkit.createUser({
-						// 	id: req.body.username,
-						// 	name: req.body.username
-						// })
-	    	// console.log(`---------- .post /register - req.body: ----------\n`, req.body);
-
+	    	const createChatUser = await chatkit.createUser({
+				id: req.body.username,
+				name: req.body.username
+			})
 
 	    	// Hash password
 				// const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -69,7 +65,8 @@ router.post('/register', async (req, res, next) => {
 		    res.json({
 		      status: 201,
 		      data: 'Register Successful',
-		      session: req.session
+		      session: req.session,
+		      ChatUser: createChatUser
 		    });
 	    
 	    } else {
@@ -94,23 +91,28 @@ router.post('/login', async(req, res, next) => {
 	    const user = await User.find({username: req.body.username})
 	    const authData = await chatkit.authenticate({ userId: req.query.user_id})
 
-	    if (user.length !== 0 && user.password === req.body.password){
+	    if (user.length !== 0 && user[0].password === req.body.password){
 
-			res.status(authData.status).send(authData.body)
 
 		    req.session.username = req.body.username;
 		    req.session.logged   = true;
 		    req.session.userId 	 = user[0]._id;
 
-			console.log(`-------------------- User Entry --------------------\n`, req.session);
-		   
 		    res.json({
 		      status: 201,
 		      data: 'Login Successful',
+		      authData: authData.body,
 		      session: req.session
 		    });
 
+			// res.status(authData.status).send(authData.body)
+
+			console.log(`-------------------- User Entry --------------------\n`, req.session);
+		   
+
 	    } else {
+			console.log(`-------------------- User --------------------\n`, user);
+
 
 			console.log(`-------------------- User Entry --------------------\n`, req.body);
 	    	console.log(`Invalid Username/Password`);
