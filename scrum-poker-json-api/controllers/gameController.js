@@ -1,13 +1,24 @@
 const express 	= require('express');
 const router 	= express.Router();
 const User 		= require('../Models/userModel.js');
-const Game 		= require('../Models/gameModel.js')
+const Game 		= require('../Models/gameModel.js');
 
 
 /**************************************************************************************
  *********************************** RESTFUL ROUTES *********************************** 
  **************************************************************************************/
 
+// ************************* GAME INDEX ROUTE ***************************
+
+router.get('/:id', async (req, res, next) => {
+
+  const games = await Game.find({});
+    res.json({
+      status: 200,
+      data: games,
+      session: req.session
+    });
+});
 
 // ************************* GAME SHOW ROUTE *************************** Logged or no logged shows a user's page
 

@@ -17,7 +17,8 @@ router.get('/', async (req, res, next) => {
 	    const users = await User.find({});
 	    res.json({
 		    status: 200,
-	        data: users
+	        data: users,
+	        session: req.session
 	    });
 	} catch(err){
 	    next(err);

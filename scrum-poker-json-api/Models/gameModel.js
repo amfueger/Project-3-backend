@@ -9,6 +9,8 @@ const GameSchema = new mongoose.Schema({
 	scrum_master: User.schema,
 	estimators:   [User.schema],
 	rounds: 	  [Round.schema],
+	status: 	  {type: String, required: true, enum: ['Pending', 'Current', 'Past']},
+	roomId: 	  {type: String},
 	date: 		  Date
 });
 

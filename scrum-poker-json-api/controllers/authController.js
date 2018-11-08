@@ -28,54 +28,60 @@ const chatkit = new ChatKit.default({
 router.post('/register', async (req, res, next) => {
 
 	try {
-		// await User.deleteMany();
+	// await User.deleteMany();
 
-    // const user = await User.find({username: req.body.username}); // Check if user exists
+	    const user = await User.find({username: req.body.username}); // Check if user exists
 
-    // if (user.length == 0){
+	    if (user.length === 0){
 
-    	console.log(`---------- .post /register - req.body: ----------\n`, req.body);
+	    	console.log(`---------- .post /register - req.body: ----------\n`, req.body);
 
-    	const password = req.body.password;
-    	// const { username } = req.body.username
-    	const createChatUser = await chatkit.createUser({
-						id: req.body.username,
-						name: req.body.username
-					})
-    	console.log(createChatUser);
-    	// Hash password
-			// const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+	    	// const createChatUser = await chatkit.createUser({
+						// 	id: req.body.username,
+						// 	name: req.body.username
+						// })
+	    	// console.log(`---------- .post /register - req.body: ----------\n`, req.body);
 
-	    // Create object {} for database entry
-	    const userDbEntry 		= {};
 
-	    userDbEntry.username 	= req.body.username;
-	    userDbEntry.company 	= req.body.company;
-	    userDbEntry.email 		= req.body.email;
-	    userDbEntry.password 	= password;
-	    // userDbEntry.password = passwordHash;
+	    	// Hash password
+				// const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-	    const createdUser = await User.create(userDbEntry);
+		    // Create object {} for database entry
+		    const userDbEntry 		= {};
 
-	    console.log(`---------- .post /register - createdUser: ----------\n`, createdUser);
+		    userDbEntry.username 	= req.body.username;
+		    userDbEntry.company 	= req.body.company;
+		    userDbEntry.email 		= req.body.email;
+		    userDbEntry.password 	= req.body.password;
+		    // userDbEntry.password = passwordHash;
 
-        // Initialize session (attach properties to session middleware, accessible through every route)
-	    req.session.username = req.body.username;
-	    req.session.logged   = true;
-	    req.session.userId	 = createdUser.id;
+		    const createdUser = await User.create(userDbEntry);
 
-    	console.log(`---------- .post /register - req.session: ----------\n`, req.session);
+		    console.log(`---------- .post /register - createdUser: ----------\n`, createdUser);
 
-	    res.json({
-	      status: 201,
-	      data: 'login successful'
-	    });
-    
-    // } else {
-	    // console.log('Sorry! This username has already been taken :(');
-    // }
+	        // Initialize session (attach properties to session middleware, accessible through every route)
+		    req.session.username = req.body.username;
+		    req.session.logged   = true;
+		    req.session.userId	 = createdUser.id;
+
+	    	console.log(`---------- .post /register - req.session: ----------\n`, req.session);
+
+		    res.json({
+		      status: 201,
+		      data: 'Register Successful',
+		      session: req.session
+		    });
+	    
+	    } else {
+		    console.log('Sorry! This username has already been taken :(')
+		    res.json({
+		      status: 400,
+		      data: 'Unable to Register. Username already taken.',
+		      session: req.session
+		    });
+	    }
 	} catch(err){
-    next(err);
+	    next(err);
 	}
 });
 
@@ -85,24 +91,36 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async(req, res, next) => {
 
 	try {
-    const user = await User.find({username: req.body.username})
-    const authData = await chatkit.authenticate({ userId: req.query.user_id})
+	    const user = await User.find({username: req.body.username})
+	    const authData = await chatkit.authenticate({ userId: req.query.user_id})
 
-    if (user.length !== 0){
+	    if (user.length !== 0 && user.password === req.body.password){
+
 			res.status(authData.status).send(authData.body)
-	    req.session.username = req.body.username;
-	    req.session.logged   = true;
-	    req.session.userId 	 = user[0]._id;
 
-	    // res.redirect('/users/' + user[0]._id);
+		    req.session.username = req.body.username;
+		    req.session.logged   = true;
+		    req.session.userId 	 = user[0]._id;
 
 			console.log(`-------------------- User Entry --------------------\n`, req.session);
+		   
+		    res.json({
+		      status: 201,
+		      data: 'Login Successful',
+		      session: req.session
+		    });
 
-    } else {
+	    } else {
+
 			console.log(`-------------------- User Entry --------------------\n`, req.body);
-    	console.log(`Invalid username`);
-    	// res.redirect('/auth/login');
-    }
+	    	console.log(`Invalid Username/Password`);
+
+		    res.json({
+		      status: 400,
+		      data: 'Invalid Username/Password',
+		      session: req.session
+		    });
+	    }
 	} catch(err){
 	    next(err);
 	}
@@ -111,12 +129,20 @@ router.post('/login', async(req, res, next) => {
 // ************************* LOGOUT INDEX ROUTE ***************************
 
 router.get('/logout', (req, res) => {
-	req.session.destroy((err)=>{
+	req.session.destroy((err)=>{ 
 		if(err){
-   		res.send(err);
-  	} else {
-   		res.redirect('/auth/login');
-  	}
+		    res.json({
+		      status: 400,
+		      data: 'Could Not Logout',
+		      session: req.session
+		    });
+	  	} else {
+		    res.json({
+		      status: 201,
+		      data: 'Logout Successful',
+		      session: req.session
+		    });
+	  	}
   	});
 });
 
