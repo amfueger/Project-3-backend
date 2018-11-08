@@ -6,7 +6,7 @@ const Round    = require('./roundModel.js');
 const GameSchema = new mongoose.Schema({
 	title: 		  {type: String, required: true},
 	description:  {type: String, required: true},
-	scrumMaster: User.schema,
+	scrumMaster:  User.schema,
 	estimators:   [User.schema],
 	rounds: 	  [Round.schema],
 	status: 	  String,

@@ -58,7 +58,7 @@ router.post('/', async (req, res, next) => {
     });
 
   } catch(err){
-    console.log(`Error in Game .post: `, err);
+    console.log(`---------- Error in Game .post ---------- \n`, err);
     res.send(err);
   }
 
@@ -68,7 +68,17 @@ router.post('/', async (req, res, next) => {
 // ************************* GAME UPDATE ROUTE *************************
 
 router.put('/:id', async (req, res, next) => {
+  try {
+    const updatedGame = await Game.findByIdAndUpdate(req.params.id, req.body, {new: true});
 
+      res.json({
+        status: 200,
+        data: updatedGame
+        });    
+      
+  } catch(err){
+    console.error(`---------- Error in Game .put ---------- \n`, err)
+  }
 });
 
 
