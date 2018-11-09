@@ -33,11 +33,15 @@ app.use(cors(corsOptions));
 const authController 	 = require('./Controllers/authController.js');
 const userController 	 = require('./Controllers/userController.js');
 const gameController 	 = require('./Controllers/gameController.js');
+const roundController 	 = require('./Controllers/roundController.js');
+const voteController 	 = require('./Controllers/voteController.js');
 // const gitHubController   = require('./Controllers/gitHubController.js');
 
 app.use('/auth', authController);
 app.use('/users', userController);
 app.use('/games', gameController);
+app.use('/rounds', roundController);
+app.use('/votes', voteController);
 // app.use('/gitHub', gitHubController);
 
 

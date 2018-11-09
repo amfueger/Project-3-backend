@@ -3,7 +3,7 @@ const Vote = require('./voteModel');
 
 
 const RoundSchema = new mongoose.Schema({
-	votes: [Vote.schema]
+	votes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Vote'}]
 });
 
 

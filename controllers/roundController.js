@@ -36,6 +36,16 @@ router.post('/', async (req, res, next) => {
       data: createdRound
     });
 
+		// ------------------------- FIND GAME ------------------------- 
+		const game = await Game.findOne({id: req.body.currentGame._id});
+
+
+		// ------------------------- MAKE ROUND ------------------------- 
+
+		const round = await Round.create(req.body.currentGame.rounds);
+
+		
+
   } catch(err){
     console.log(`---------- Error in Round .post ---------- \n`, err);
     res.send(err);
