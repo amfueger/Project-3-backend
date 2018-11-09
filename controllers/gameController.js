@@ -1,7 +1,7 @@
 const express 	= require('express');
 const router 	= express.Router();
 
-const Vote    = require('../models/voteModel.js');
+const Game    = require('../models/gameModel.js');
 
 
 /**************************************************************************************
@@ -11,16 +11,35 @@ const Vote    = require('../models/voteModel.js');
 // ************************* VOTE INDEX ROUTE ***************************
 
 router.get('/', async (req, res, next) => {
-  // await Vote.deleteMany();
+  // await Game.deleteMany();
 
-  const votes = await Vote.find({});
+  const games = await Game.find({});
     res.json({
       status: 200,
-      data: votes,
+      data: games,
       session: req.session
     });
 });
 
+// ************************* VOTE SHOW ROUTE *************************** Logged or no logged shows a user's page
+
+router.get('/:id', async (req, res, next) => {
+
+});
+
+
+// ************************* VOTE NEW ROUTE ****************************
+
+router.get('/new', (req, res) => {
+
+});
+
+
+// ************************* VOTE EDIT ROUTE ***************************
+
+router.get('/:id/edit', async (req, res, next) => {	
+
+});
 
 
 // ************************* VOTE CREATE ROUTE *************************
@@ -29,22 +48,48 @@ router.post('/', async (req, res, next) => {
 
   try {
     console.log(` ---------- req.body ----------\n`, req.body);
-    const createdVote = await Vote.create(req.body);
+    const createdGame = await Game.create(req.body);
 
-    console.log(` ---------- createdVote ----------\n`, createdVote);
+    console.log(` ---------- createdGame ----------\n`, createdGame);
 
     res.json({
       status: 200,
-      data: createdVote
+      data: createdGame
     });
 
   } catch(err){
-    console.log(`---------- Error in Vote .post ---------- \n`, err);
+    console.log(`---------- Error in Game .post ---------- \n`, err);
     res.send(err);
   }
 
 });
 
+
+// ************************* VOTE UPDATE ROUTE *************************
+
+router.put('/:id', async (req, res, next) => {
+  console.log(`----------------------------------------------------\n`, req.body);
+
+  try {
+    const updatedGame = await Game.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    console.log(`---------- updatedGame ---------- \n`, updatedGame)
+
+      res.json({
+        status: 200,
+        data: updatedGame
+        });    
+      
+  } catch(err){
+    // console.error(`---------- Error in Game .put ---------- \n`, err)
+  }
+});
+
+
+// ************************* VOTE DESTROY ROUTE *************************
+
+router.delete('/:id', async (req, res, next) => {
+
+});
 
 
 module.exports = router;
