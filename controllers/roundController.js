@@ -1,75 +1,68 @@
 const express 	= require('express');
 const router 	= express.Router();
-const User 		= require('../models/userModel.js');
-const Game 		= require('../models/gameModel.js');
+const Round 	= require('../models/roundModel.js');
 
 
 /**************************************************************************************
  *********************************** RESTFUL ROUTES *********************************** 
  **************************************************************************************/
 
-// ************************* GAME INDEX ROUTE ***************************
+// ************************* ROUND INDEX ROUTE ***************************
 
 router.get('/', async (req, res, next) => {
-  // await Game.deleteMany();
+  // await Round.deleteMany();
 
-  const games = await Game.find({});
+  const rounds = await Round.find({});
     res.json({
       status: 200,
-      data: games,
+      data: rounds,
       session: req.session
     });
 });
 
 
-// ************************* GAME CREATE ROUTE *************************
+// ************************* ROUND CREATE ROUTE *************************
 
 router.post('/', async (req, res, next) => {
 
   try {
     console.log(` ---------- req.body ----------\n`, req.body);
-    const createdGame = await Game.create(req.body);
+    const createdRound = await Round.create(req.body);
 
-    console.log(` ---------- createdGame ----------\n`, createdGame);
+    console.log(` ---------- createdRound ----------\n`, createdRound);
 
     res.json({
       status: 200,
-      data: createdGame
+      data: createdRound
     });
 
   } catch(err){
-    console.log(`---------- Error in Game .post ---------- \n`, err);
+    console.log(`---------- Error in Round .post ---------- \n`, err);
     res.send(err);
   }
 
 });
 
 
-// ************************* GAME UPDATE ROUTE *************************
+// ************************* ROUND UPDATE ROUTE *************************
 
 router.put('/:id', async (req, res, next) => {
   console.log(`----------------------------------------------------\n`, req.body);
 
   try {
-    const updatedGame = await Game.findByIdAndUpdate(req.params.id, req.body, {new: true});
-    console.log(`---------- updatedGame ---------- \n`, updatedGame)
+    const updatedRound = await Round.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    console.log(`---------- updatedRound ---------- \n`, updatedRound)
 
       res.json({
         status: 200,
-        data: updatedGame
+        data: updatedRound
         });    
       
   } catch(err){
-    // console.error(`---------- Error in Game .put ---------- \n`, err)
+    // console.error(`---------- Error in Round .put ---------- \n`, err)
   }
 });
 
-
-// ************************* GAME DESTROY ROUTE *************************
-
-router.delete('/:id', async (req, res, next) => {
-
-});
 
 
 module.exports = router;
