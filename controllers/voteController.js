@@ -1,7 +1,8 @@
-const express 	= require('express');
+const express = require('express');
 const router 	= express.Router();
-const Vote 		= require('../models/voteModel.js');
 const Game    = require('../models/gameModel.js');
+const Round   = require('../models/roundModel.js');
+const Vote    = require('../models/voteModel.js');
 
 
 /**************************************************************************************
@@ -40,18 +41,48 @@ router.post('/', async (req, res, next) => {
 
     // ------------------------- ADD VOTE TO GAME ROUND ------------------------- 
 
-    const updatedGame = await Game.findById(req.body.currentGameState.currentGame._id);
+    const gameToUpdate = await Game.findById(req.body.currentGameState.currentGame._id);
 
-    updatedGame.rounds[updatedGame.rounds.length-1].votes.push(createdVote);
-    // console.log(`updatedGame.rounds.length: `, updatedGame.rounds.length);
-    await updatedGame.save();
+    if (gameToUpdate.rounds.length === 0) {          
+      const roundForGame = await Round.create({
+        votes: createdVote
+      });                       // If no rounds in game yet, must instantiate one
+      
+      console.log(` ---------- roundForGame ----------\n`, roundForGame);
 
-    console.log(` ---------- updatedGame ----------\n`, updatedGame);
+      roundForGame.votes.push(createdVote);
+
+      await roundForGame.save();
+
+      console.log(` ---------- roundForGame after vote pushed ----------\n`, roundForGame);
+
+      gameToUpdate.rounds.push(roundForGame)                                      // Then add it to game
+     
+
+      // gameToUpdate.rounds[0].votes.push(createdVote);                          // Add votes to round 0
+      // console.log(` ---------- gameToUpdate ----------\n`, gameToUpdate);
+
+    } else {
+      console.log(` ---------- gameToUpdate  ----------\n`, gameToUpdate);
+      
+      gameToUpdate.rounds.forEach((round, i)=>{
+        console.log(` ---------- round[`+i+`] ----------\n`, round );
+      // console.log(` ---------- gameToUpdate.rounds[0].votes ----------\n`, gameToUpdate.rounds[0].votes);
+      })
+
+      gameToUpdate.rounds[gameToUpdate.rounds.length-1].votes.push(createdVote);
+      console.log(` ---------- gameToUpdate.rounds after vote pushed ----------\n`, gameToUpdate.rounds);
+    }
+
+
+    // console.log(`gameToUpdate.rounds.length: `, gameToUpdate.rounds.length);
+    await gameToUpdate.save();
+
 
     res.json({
       status: 200,
       createdVote: createdVote,
-      updatedGame: updatedGame
+      gameToUpdate: gameToUpdate
     });
 
   } catch(err){
