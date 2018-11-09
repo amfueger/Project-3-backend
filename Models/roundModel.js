@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Vote = require('./voteModel.js');
+const Vote = require('./voteModel');
 
 
 const RoundSchema = new mongoose.Schema({

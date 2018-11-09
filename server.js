@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express        = require('express');
 const app            = express();
 const bodyParser     = require('body-parser');
@@ -5,11 +7,8 @@ const methodOverride = require('method-override');
 const cors           = require('cors');
 const session        = require('express-session');
 // const request 		 = require('superagent');
-require('dotenv').config();
 
 require('./db/db');
-
-// const User = require('./models/user');
 
 // app.use(express.static('public'));
 app.use(methodOverride('_method'));
@@ -31,34 +30,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-
-
-
-// app.use((req, res, next) => {
-// 	if(req.session.loggedIn == undefined) {
-// 		req.session.loggedIn = false
-// 	}
-// 	//next logically belongs outside in case I do more in this section
-// 	next()
-// });
-
-
-
 const authController 	 = require('./Controllers/authController.js');
 const userController 	 = require('./Controllers/userController.js');
 const gameController 	 = require('./Controllers/gameController.js');
-// const calendarController = require('./Controllers/calendarController.js');
 // const gitHubController   = require('./Controllers/gitHubController.js');
 
 app.use('/auth', authController);
 app.use('/users', userController);
 app.use('/games', gameController);
-// app.use('/calendar', calendarController);
 // app.use('/gitHub', gitHubController);
 
-// app.get('/seed', async (req, res) => {
-//  //For later data 
-// })
 
 app.listen(process.env.PORT || 9000, () => {
   console.log('listening on port 9000');

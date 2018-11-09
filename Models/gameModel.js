@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose');
-const User 	   = require('./userModel.js');
-const Round    = require('./roundModel.js');
+const User 	   = require('./userModel');
+const Round    = require('./roundModel');
 
 
 const GameSchema = new mongoose.Schema({

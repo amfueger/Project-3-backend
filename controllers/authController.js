@@ -1,6 +1,6 @@
 const express 	= require('express');
 const router 	= express.Router();
-const User 		= require('../Models/userModel.js');
+const User 		= require('../models/userModel.js');
 const ChatKit = require('@pusher/chatkit-server');
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -104,8 +104,6 @@ router.post('/login', async(req, res, next) => {
 		      data: 'Login Successful',
 		      session: req.session
 		    });
-
-			// res.status(authData.status).send(authData.body)
 
 			console.log(`-------------------- User Entry --------------------\n`, req.session);
 		   
