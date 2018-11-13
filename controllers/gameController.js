@@ -22,6 +22,19 @@ router.get('/', async (req, res, next) => {
 });
 
 
+// ************************* GAME SHOW ROUTE ***************************
+
+router.get('/:id', async (req, res, next) => {
+
+  const game = await Game.findById(req.params.id);
+    res.json({
+      status: 200,
+      data: game,
+      session: req.session
+    });
+});
+
+
 // ************************* GAME CREATE ROUTE *************************
 
 router.post('/', async (req, res, next) => {

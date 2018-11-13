@@ -19,8 +19,9 @@ app.use(session({
   saveUninitialized: false // legal
 }));
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+// Getting error 413 (Payload too large)
+app.use(bodyParser.urlencoded({limit: '50mb', extended: false}))
+app.use(bodyParser.json({limit: '50mb'}));
 
 const corsOptions = {
   origin: 'http://localhost:3000',

@@ -23,6 +23,20 @@ router.get('/', async (req, res, next) => {
 });
 
 
+// ************************* VOTE SHOW ROUTE ***************************
+
+router.get('/:id', async (req, res, next) => {
+  // await Vote.deleteMany();
+
+  const vote = await Vote.findById(req.params._id);
+    res.json({
+      status: 200,
+      data: vote,
+      session: req.session
+    });
+});
+
+
 // ************************* VOTE CREATE ROUTE *************************
 
 router.post('/', async (req, res, next) => {
@@ -32,52 +46,38 @@ router.post('/', async (req, res, next) => {
 
 
     // ------------------------- CREATE VOTE ------------------------- 
-
     const createdVote = await Vote.create(req.body);
-
     await createdVote.save();
-
     console.log(` ---------- createdVote ----------\n`, createdVote);
 
+
     // ------------------------- ADD VOTE TO GAME ROUND ------------------------- 
+    const gameToUpdate = await Game.findById(req.body.game._id);                    // Find Game
 
-    const gameToUpdate = await Game.findById(req.body.currentGameState.currentGame._id);
+    if (gameToUpdate.rounds.length === 0) {                                         // If no rounds in game yet
 
-    if (gameToUpdate.rounds.length === 0) {          
-      const roundForGame = await Round.create({
-        votes: createdVote
-      });                       // If no rounds in game yet, must instantiate one
-      
-      console.log(` ---------- roundForGame ----------\n`, roundForGame);
-
-      roundForGame.votes.push(createdVote);
-
-      await roundForGame.save();
-
-      console.log(` ---------- roundForGame after vote pushed ----------\n`, roundForGame);
-
-      gameToUpdate.rounds.push(roundForGame)                                      // Then add it to game
+      const roundZero = await Round.create({votes: createdVote});                   // Must create roundZero
+      roundZero.votes.push(createdVote);                                            // Add vote to roundZero
+      await roundZero.save();                                                       // Save roundZero
+      gameToUpdate.rounds.push(roundZero)                                           // Add roundZero to game
      
 
-      // gameToUpdate.rounds[0].votes.push(createdVote);                          // Add votes to round 0
-      // console.log(` ---------- gameToUpdate ----------\n`, gameToUpdate);
+      // console.log(` ---------- gameToUpdate with no rounds yet ----------\n`, gameToUpdate);
+      // console.log(` ---------- roundZero before vote pushed ----------\n`, roundZero);
+      // console.log(` ---------- roundZero after vote pushed ----------\n`, roundZero);
 
-    } else {
-      console.log(` ---------- gameToUpdate  ----------\n`, gameToUpdate);
-      
-      gameToUpdate.rounds.forEach((round, i)=>{
-        console.log(` ---------- round[`+i+`] ----------\n`, round );
-      // console.log(` ---------- gameToUpdate.rounds[0].votes ----------\n`, gameToUpdate.rounds[0].votes);
-      })
-
-      gameToUpdate.rounds[gameToUpdate.rounds.length-1].votes.push(createdVote);
-      console.log(` ---------- gameToUpdate.rounds after vote pushed ----------\n`, gameToUpdate.rounds);
+    } else {                                                                        // If Game already has rounds
+      gameToUpdate.rounds[gameToUpdate.rounds.length-1].votes.forEach((vote, i) => {  // Check whether user has already voted
+        if (vote.voter == req.body.voter) {                                           // If yes, do nothing 
+          console.log(`---------- User has already voted ----------`);
+        } else {                                                                      // If not, add vote
+          gameToUpdate.rounds[gameToUpdate.rounds.length-1].votes.push(createdVote);
+        }
+      });
+      console.log(` ---------- game rounds after vote pushed ----------\n`, gameToUpdate.rounds);
     }
 
-
-    // console.log(`gameToUpdate.rounds.length: `, gameToUpdate.rounds.length);
     await gameToUpdate.save();
-
 
     res.json({
       status: 200,

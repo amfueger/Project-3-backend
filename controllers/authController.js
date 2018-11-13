@@ -28,7 +28,7 @@ const chatkit = new ChatKit.default({
 router.post('/register', async (req, res, next) => {
 
 	try {
-	// await User.deleteMany();
+		// await User.deleteMany();
 
 	    const user = await User.find({username: req.body.username}); // Check if user exists
 
